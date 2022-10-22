@@ -18,7 +18,7 @@ public class TriggerPad : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            sphere.transform.localScale = Vector3.one * 0.01f;
+            sphere.transform.localScale += Vector3.one * 0.01f;
         }
     }
 
