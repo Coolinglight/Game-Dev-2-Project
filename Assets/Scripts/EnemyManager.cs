@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyManager : MonoBehaviour
+public class EnemyManager : Singleton<EnemyManager>
 {
 
     public Transform[] spawnPoint;
@@ -14,9 +14,10 @@ public class EnemyManager : MonoBehaviour
 
     void Start()
     {
+        ShuffleList(enemies);
         StartCoroutine(SpawnEnemyDelayed());
     }
-
+    
     
     void Update()
     {
@@ -28,6 +29,7 @@ public class EnemyManager : MonoBehaviour
         {
             KillAllEnemies();
         }
+        
     }
 
     void SpawnEnemy()
@@ -38,10 +40,20 @@ public class EnemyManager : MonoBehaviour
         enemies.Add(enemy);
     }
 
+    public void KillEnemy(GameObject _enemy)
+    {
+        if (enemies.Count == 0)
+            return;
+
+        Destroy(_enemy);
+        enemies.Remove(_enemy);
+    }
+
     void KillAllEnemies()
     {
         if (enemies.Count == 0)
             return;
+
         for(int i = 0; i < enemies.Count; i++)
         {
             Destroy(enemies[i]);
@@ -63,5 +75,15 @@ public class EnemyManager : MonoBehaviour
     public Transform GetRandomSpawnPoint()
     {
         return spawnPoint[Random.Range(0, spawnPoint.Length)];
+    }
+
+    private void OnEnable()
+    {
+        Enemy.OnEnemyDie += KillEnemy;
+    }
+
+    private void OnDisable()
+    {
+        Enemy.OnEnemyDie -= KillEnemy;
     }
 }

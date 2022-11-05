@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Projectile : MonoBehaviour
+public class Projectile : GameBehaviour
 {
 
     // Update is called once per frame
@@ -11,9 +11,7 @@ public class Projectile : MonoBehaviour
         
     }
 
-    
-
-    private void OnCollisionEnter(Collision collision)
+    public void ProjectileHit(Collision collision)
     {
         if (collision.collider.CompareTag("Target"))
         {
@@ -21,5 +19,10 @@ public class Projectile : MonoBehaviour
             Destroy(collision.collider.gameObject, 1f);
             Destroy(this.gameObject);
         }
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        ProjectileHit(collision);
     }
 }
