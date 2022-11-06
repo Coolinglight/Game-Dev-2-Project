@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public enum GameState { Title, Playing, Paused, GameOver }
 public enum Difficulty { Easy, Medium, Hard }
@@ -9,6 +10,7 @@ public enum Difficulty { Easy, Medium, Hard }
 public class GameManager : Singleton<GameManager>
 {
     public static event Action<Difficulty> OnDifficultyChanged = null;
+
 
     public GameState gameState;
     public Difficulty difficulty;
@@ -48,6 +50,12 @@ public class GameManager : Singleton<GameManager>
                 scoreMultiplier = 3;
                 break;
         }
+
+        if(gameState == GameState.Playing)
+        {
+            _UI.UpdateDifficulty(difficulty);
+        }
+        
     }
 
     public void ChangeGameState(GameState _gameState)
@@ -65,7 +73,6 @@ public class GameManager : Singleton<GameManager>
         score += _score * scoreMultiplier;
         _UI.UpdateScore(score);
     }
-
 
     private void OnEnable()
     {

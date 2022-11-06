@@ -47,7 +47,7 @@ public class Enemy : GameBehaviour
         }
     }
 
-    void Die()
+    public void Die()
     {
         if(myHealth <= 0)
         {

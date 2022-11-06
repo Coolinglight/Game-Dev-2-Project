@@ -7,7 +7,7 @@ public class UITitle : GameBehaviour
 {
     public void StartGame()
     {
-        SceneManager.LoadScene("MainScene");
+        SceneManager.LoadScene("MainGame");
         _GM.ChangeGameState(GameState.Playing);
     }
 

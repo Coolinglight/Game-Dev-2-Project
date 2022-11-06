@@ -5,6 +5,7 @@ using UnityEngine;
 public class EnemyManager : Singleton<EnemyManager>
 {
 
+
     public Transform[] spawnPoint;
     public string[] playerNames;
     public GameObject[] enemyTypes;
@@ -16,6 +17,7 @@ public class EnemyManager : Singleton<EnemyManager>
     {
         ShuffleList(enemies);
         StartCoroutine(SpawnEnemyDelayed());
+        
     }
     
     
@@ -38,6 +40,7 @@ public class EnemyManager : Singleton<EnemyManager>
         int spawnPoints = Random.Range(0, spawnPoint.Length);
         GameObject enemy = Instantiate(enemyTypes[enemyNumber], spawnPoint[spawnPoints].position, spawnPoint[spawnPoints].rotation, transform);
         enemies.Add(enemy);
+        _UI.UpdateEnemyCount(enemies.Count);
     }
 
     public void KillEnemy(GameObject _enemy)
@@ -45,8 +48,9 @@ public class EnemyManager : Singleton<EnemyManager>
         if (enemies.Count == 0)
             return;
 
-        Destroy(_enemy);
-        enemies.Remove(_enemy);
+        Destroy(_enemy.gameObject);
+        enemies.Remove(_enemy.gameObject);
+        _UI.UpdateEnemyCount(enemies.Count);
     }
 
     void KillAllEnemies()
@@ -63,12 +67,14 @@ public class EnemyManager : Singleton<EnemyManager>
 
     IEnumerator SpawnEnemyDelayed()
     {
-        for(int i = 0; i < spawnPoint.Length; i++)
+        yield return new WaitForSeconds(spawnDelay);
+        if(_GM.gameState == GameState.Playing)
         {
-            int rndEnemy = Random.Range(0, enemyTypes.Length);
-            GameObject enemy = Instantiate(enemyTypes[rndEnemy], spawnPoint[i].position, spawnPoint[i].rotation);
-            enemies.Add(enemy);
-            yield return new WaitForSeconds(spawnDelay);
+            SpawnEnemy();
+        }
+        if(enemies.Count <= spawnCount)
+        {
+            StartCoroutine(SpawnEnemyDelayed());
         }
     }
 

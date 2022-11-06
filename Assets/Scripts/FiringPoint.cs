@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class FiringPoint : MonoBehaviour
+public class FiringPoint : Singleton<FiringPoint>
 {
     public GameObject projectilePrefab;
     public float projectileSpeed = 1000;

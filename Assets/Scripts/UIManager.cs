@@ -7,6 +7,17 @@ public class UIManager : Singleton<UIManager>
 {
     public TMP_Text scoreText;
     public TMP_Text timerText;
+    public TMP_Text enemyCountText;
+    public TMP_Text difficultyText;
+
+    void Start()
+    {
+        if(_GM.gameState == GameState.Playing)
+        {
+            UpdateScore(0);
+            UpdateEnemyCount(0);
+        }
+    }
 
     public void UpdateScore(int _score)
     {
@@ -23,5 +34,15 @@ public class UIManager : Singleton<UIManager>
             timerText.color = Color.white;
         if (_timer <= 0)
             Time.timeScale = 0;
+    }
+
+    public void UpdateEnemyCount(int _count)
+    {
+        enemyCountText.text = "Enemies: " + _count;
+    }
+
+    public void UpdateDifficulty(Difficulty _difficulty)
+    {
+        difficultyText.text = "Difficulty: " + _difficulty.ToString();
     }
 }

@@ -5,7 +5,7 @@ using UnityEngine;
 public class Projectile : GameBehaviour
 {
 
-    // Update is called once per frame
+    
     void Update()
     {
         
